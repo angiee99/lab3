@@ -1,5 +1,4 @@
 #include <iostream>
-// #include <iomanip>
 #include <stdio.h>
 #include <string>
 using namespace std; 
@@ -75,19 +74,20 @@ public:
 };
 
 class Stack{
-    char* stack; 
+    string* stack; 
     int size, capacity; 
     int top; 
 public: 
     Stack(int capacity){
         this->capacity = capacity; 
-        this->stack = new char[capacity]; 
+        this->stack = new string[capacity]; 
         this->top = -1;
+        this->size = 0; 
     }
     ~Stack(){
         delete[] stack; 
     };
-    void push(char value){
+    void push(string value){
         if(size < capacity){
             top++;
             size++;
@@ -97,9 +97,9 @@ public:
             cout << "Stack is full" << endl;
         }
     };
-    char pop(){
+    string pop(){
         if(size > 0){
-            char value = stack[top];
+            string value = stack[top];
             top--; 
             size--; 
             return value; 
@@ -109,7 +109,7 @@ public:
            return 0;  
         } 
     }; 
-    char peek(){
+    string peek(){
         if(top > -1) {
             return stack[top]; 
         }
