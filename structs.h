@@ -28,7 +28,9 @@ public:
     }
     // ???? 
     void resize();
-    // bool isEmpty
+    bool isEmpty(){
+        return this->size==0;
+    }
     // bool isFull
 };
 
@@ -51,6 +53,10 @@ public:
         }
         cout << endl; 
     }
-    // bool isEmpty
-    // bool isFull
+    bool isEmpty(){
+        return this->size==0;
+    }
+    bool isFull(){
+        return size==capacity;
+    }
 };

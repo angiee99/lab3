@@ -22,15 +22,22 @@ int main(int argc, char *argv[]){
     
     try{
         if(argc != 2){
-            cerr << "The command argument should include 2 arguments: \n-the name of the program \n-the directory name" << endl; 
+            cerr << "The command argument should include 2 arguments: \n-the name of the program \n-the math expresion inside the quotes " << endl; 
             return 1;       
         }
         for(int i = 0; i < argc; i ++){
             cout << argv[i] << endl; 
         }
- 
+        // stringstream ss(argv[1]); 
+        // char c;
+
+        // while(ss.get(c)){
+        //     cout << c << endl; 
+        // } 
+
         Parser p(argv[1]); 
         p.toPostfix(); 
+   
 
     }
     catch(exception &e){
@@ -41,7 +48,6 @@ int main(int argc, char *argv[]){
 
 void testStructs(){
     try{
-       
         Queue q(5); 
         q.enqueue("1"); 
         q.enqueue("2"); 
