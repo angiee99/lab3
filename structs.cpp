@@ -1,28 +1,16 @@
-#include <iostream>
-#include <stdio.h>
-#include <string>
+#include "structs.h"
 using namespace std; 
 
-class Queue{
-    string* queue; 
-    int startInd, endInd; 
-    int size, capacity; 
-public: 
-    Queue(int capacity){
-        this->capacity = capacity; 
-        this->queue = new string[capacity]; 
-        this->size = 0; 
-        this->startInd = -1; 
-        this->endInd = -1; 
-    }
-    //copy cnstr
-    ~Queue(){
-        delete[] queue; 
-    }
-    int getSize() const {
-        return size;
-    }
-    void enqueue(const string value){
+
+Queue::Queue(int capacity){
+    this->capacity = capacity; 
+    this->queue = new string[capacity]; 
+    this->size = 0; 
+    this->startInd = -1; 
+    this->endInd = -1; 
+}
+
+void Queue::enqueue(const string value){
         if (size == capacity){
             cout << "Queue full" << endl; 
             // resize(); 
@@ -36,7 +24,8 @@ public:
             startInd = 0; 
         }
     }
-    string dequeue(){
+
+string Queue::dequeue(){
         string value; 
         if(size == 0){
             // throw exception("Queue is empty, not able to dequeue");
@@ -56,13 +45,10 @@ public:
         }
         
     }
-    void print(){
-        for(int i = startInd; i <= size; i++){
-            cout << queue[i] << " ";
-        }
-    }
+
     // ???? 
-    void resize(){
+
+void Queue::resize(){
         this->capacity *= 2; 
         string* newqueue =  new string[this->capacity]; 
         memcpy( newqueue, queue, size * sizeof(string) );
@@ -71,23 +57,18 @@ public:
     }
     // bool isEmpty
     // bool isFull
-};
 
-class Stack{
-    string* stack; 
-    int size, capacity; 
-    int top; 
-public: 
-    Stack(int capacity){
+
+// Stack::Stack(){}; 
+
+Stack::Stack(int capacity){
         this->capacity = capacity; 
         this->stack = new string[capacity]; 
         this->top = -1;
         this->size = 0; 
     }
-    ~Stack(){
-        delete[] stack; 
-    };
-    void push(string value){
+
+void Stack::push(string value){
         if(size < capacity){
             top++;
             size++;
@@ -97,7 +78,8 @@ public:
             cout << "Stack is full" << endl;
         }
     };
-    string pop(){
+
+string Stack::pop(){
         if(size > 0){
             string value = stack[top];
             top--; 
@@ -109,18 +91,10 @@ public:
            return 0;  
         } 
     }; 
-    string peek(){
+
+string Stack::peek(){
         if(top > -1) {
             return stack[top]; 
         }
         return 0; 
     }; 
-    void print(){
-        for(int i = 0; i <= top; i++){
-            cout << stack[i] << " "; 
-        }
-        cout << endl; 
-    }
-    // bool isEmpty
-    // bool isFull
-};
