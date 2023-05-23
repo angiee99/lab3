@@ -21,30 +21,26 @@ void testStructs();
 int main(int argc, char *argv[]){
     
     try{
-        if(argc != 2){
-            cerr << "The command argument should include 2 arguments: \n-the name of the program \n-the math expresion inside the quotes " << endl; 
-            return 1;       
-        }
+        // if(argc != 2){
+        //     cerr << "The command argument should include 2 arguments: \n-the name of the program \n-the math expresion inside the quotes " << endl; 
+        //     return 1;       
+        // }
         for(int i = 0; i < argc; i ++){
             cout << argv[i] << endl; 
         }
-        // stringstream ss(argv[1]); 
-        // char c;
-
-        // while(ss.get(c)){
-        //     cout << c << endl; 
-        // } 
-
-        Parser p(argv[1]); 
+        // string math = "-(1 - 5 )-4 ^ -2 ^ 3"; 
+        // parseMePls(math);
+        
+        Parser p( argv[1]);  //!
         p.toPostfix(); 
+       
    
-
     }
     catch(exception &e){
         cerr << "Default exception occured:\n" << e.what() << endl; 
     }
-
 }
+
 
 void testStructs(){
     try{
