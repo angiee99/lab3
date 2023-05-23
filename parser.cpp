@@ -16,7 +16,7 @@ Parser::Parser(string input){
 }
 
 void Parser::toPostfix(){
-    _parseMePls(input); 
+    _prepareInput(); 
 
     cout << input.length() << endl; 
     // for future with chars in Queue and Stack
@@ -60,26 +60,29 @@ void Parser::toPostfix(){
 
 }
 
-void Parser::_parseMePls(string& str){
-// delete Spaces
-  // maybe add check if it can find any space in a string! 
-    stringstream ss(str); 
-    string input, temp; 
-    while(ss >> temp) input+= temp; 
-    cout << input << endl;
-// delete Spaces
-    for(int i = 0; i < input.length(); i++){
-        if (input[i] == '-'){
-            if( (i == 0) || (!isdigit(input[i-1])) && input[i-1]!= ')'){
-                input.replace(i, 1, "u");
+void Parser::_prepareInput(){
+
+  string newinput;
+  if(input.find(' ')!= string::npos){ // delete Spaces
+    stringstream ss(this->input); 
+    string temp; 
+    while(ss >> temp) newinput+= temp; 
+    
+  } else newinput = this->input;
+  cout << newinput << endl;  
+
+    for(int i = 0; i < newinput.length(); i++){
+        if (newinput[i] == '-'){
+            if( (i == 0) || (!isdigit(newinput[i-1])) && newinput[i-1]!= ')'){
+                newinput.replace(i, 1, "u");
             }
         }
     }
-    cout << input<< endl; 
-    str = input; 
+    cout << newinput<< endl; 
+    this->input = newinput; 
 };
 
-void Parser:: _decideAndPut(const string value){
+void Parser:: _decideAndPut(const string& value){//const Token& value
     if (_ifNumber(value)){
         cout<< value<< endl; 
         qu->enqueue(value); 
@@ -105,7 +108,7 @@ void Parser:: _decideAndPut(const string value){
     }
 }
 
-int  Parser::getPrecedence(const string o){
+int  Parser::getPrecedence(const string& o){
     if (o == ")") return 0; 
     if (o == "+" || o == "-") return 1;
     if (o == "*" || o == "/" || o == "% ") return 2; 
@@ -114,7 +117,7 @@ int  Parser::getPrecedence(const string o){
     else return -1;
 }
 
-bool Parser::_ifNumber(const string s){
+bool Parser::_ifNumber(const string& s){
     string operators = "+-/*%()^";// змахує на атрибут
     if (operators.find(s) == string::npos){
         return true;
@@ -123,7 +126,7 @@ bool Parser::_ifNumber(const string s){
     else return false; 
 }
 
-//mb a whole class with queue as cnstr argument
+
 int Parser::PostfixEval(){
     while(!qu->isEmpty()){
         string token = qu->dequeue(); 
@@ -135,7 +138,7 @@ int Parser::PostfixEval(){
     return stoi(st->pop());
 }
 
-string Parser::countRes(string token){
+string Parser::countRes(string& token){
     int b = stoi(st->pop()); // ckeck for exception 
     int a = stoi(st->pop());
     if (token == "+") return to_string(a+b); 
