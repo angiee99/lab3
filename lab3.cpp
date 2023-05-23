@@ -25,15 +25,13 @@ int main(int argc, char *argv[]){
         //     cerr << "The command argument should include 2 arguments: \n-the name of the program \n-the math expresion inside the quotes " << endl; 
         //     return 1;       
         // }
-        for(int i = 0; i < argc; i ++){
-            cout << argv[i] << endl; 
-        }
+
         // string math = "-(1 - 5 )-4 ^ -2 ^ 3"; 
         // parseMePls(math);
         
         Parser p( argv[1]);  //!
         p.toPostfix(); 
-       
+        cout << p.PostfixEval()<< endl;
    
     }
     catch(exception &e){

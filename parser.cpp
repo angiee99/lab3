@@ -62,6 +62,7 @@ void Parser::toPostfix(){
 
 void Parser::_parseMePls(string& str){
 // delete Spaces
+  // maybe add check if it can find any space in a string! 
     stringstream ss(str); 
     string input, temp; 
     while(ss >> temp) input+= temp; 
@@ -120,4 +121,27 @@ bool Parser::_ifNumber(const string s){
     }
     else if (s.length() > 1 && s[0] == '-') return true;
     else return false; 
+}
+
+//mb a whole class with queue as cnstr argument
+int Parser::PostfixEval(){
+    while(!qu->isEmpty()){
+        string token = qu->dequeue(); 
+        if(_ifNumber(token)){
+            st->push(token); 
+        }
+        else st->push(countRes(token));
+    }
+    return stoi(st->pop());
+}
+
+string Parser::countRes(string token){
+    int b = stoi(st->pop()); // ckeck for exception 
+    int a = stoi(st->pop());
+    if (token == "+") return to_string(a+b); 
+    if (token == "-") return to_string(a-b); 
+    if (token == "*") return to_string(a*b); 
+    if (token == "/") return to_string(a/b); 
+    if (token == "^") return to_string(pow(a, b));
+    return "";
 }
