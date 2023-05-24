@@ -6,19 +6,31 @@
 #include <sstream>
 #include "structs.h" 
 using namespace std; 
-// class Operator {
-//     int precedence;
-//     int opCount;//(how many operands need)
-//     bool isLeft; 
-//     char value; 
-// public: 
-//     Operator();
-//     getValue();
-// };
-class Parser{ //mb change name
-    Queue *qu; //postfix 
+
+class Operator{
+    int precedence;
+    // int opCount;//(how many operands need, is 2 for all operators I've got)
+    bool left; 
+    string o; 
+    static const string operator_list;
+    void countPrec();
+public: 
+    Operator(string value);
+    string value(){ return o; }; 
+    int getPrec();
+    bool isLeft(){ return left; }
+};
+
+
+class Parser{ //mb change name to Yard
+    Queue *qu; 
     Stack *st; 
     string input; 
+protected: 
+    void _prepareInput();
+    void _decideAndPut(const string&);   
+    bool _ifNumber(const string&); 
+    string _countRes(string& token); 
 public: 
     Parser(string input); 
     ~Parser(){
@@ -27,11 +39,6 @@ public:
     }
     Parser(const Parser& another);
     void toPostfix(); // +
-    void _prepareInput();
-    void _decideAndPut(const string&); // + internal method  
-    bool _ifNumber(const string&); // internal method (token method)
-    int  getPrecedence(const string&); // would go to be the method of a token 
-
     int PostfixEval(); //+
-    string countRes(string& token); //+
+   
 };

@@ -33,35 +33,32 @@ Queue::Queue(Queue& another){
 }
 
 void Queue::enqueue(const string& value){
-        if (size == capacity) resize(); 
-        endInd++; 
-        size++;
-        queue[endInd] = value; 
+    if (size == capacity) resize(); 
+    endInd++; 
+    size++;
+    queue[endInd] = value; 
 
-        if(size == 1){
-            startInd = 0; 
-        }
+    if(size == 1){
+        startInd = 0; 
     }
+}
 
 string Queue::dequeue(){
         string value; 
         if(size == 0){
-            // throw exception("Queue is empty, not able to dequeue");
-            cout << "Queue is empty, not able to dequeue" << endl;
-            return "";
+            throw runtime_error("Queue is empty, not able to dequeue");
         }
         else{ 
             value = queue[startInd];
             startInd++; 
             size--; 
+            
+            if(size == 0){
+                startInd= -1;
+                endInd = -1;
+            }
             return value; 
         }
-        if(size == 0){
-            startInd= -1;
-            endInd = -1;
-            return "";
-        }
-        
     }
 
 void Queue::resize(){
@@ -73,20 +70,19 @@ void Queue::resize(){
 }
 
 
-
 Stack::Stack(){
     this->capacity = 1; 
     this->stack = new string[capacity]; 
     this->top = -1;
     this->size = 0; 
 }
-
 Stack::Stack(int capacity){
     this->capacity = capacity; 
     this->stack = new string[capacity]; 
     this->top = -1;
     this->size = 0; 
 }
+
 Stack::Stack(Stack& another){
     this->capacity = another.capacity; 
     this->stack = new string[capacity]; 
@@ -98,6 +94,7 @@ Stack::Stack(Stack& another){
         }
     }
 }
+
 void Stack::resize(){
     this->capacity *= 2; 
     string* newstack =  new string[this->capacity]; 
@@ -122,8 +119,7 @@ string Stack::pop(){
             return value; 
         }
         else{
-           cout << "Stack is void" << endl;
-           return 0;  
+           throw  runtime_error("Stack is void, unable to pop."); 
         } 
     }; 
 
@@ -131,5 +127,5 @@ string Stack::peek(){
     if(top > -1) {
         return stack[top]; 
     }
-    return 0; 
+    throw runtime_error("Stack is void, nothing to peek here.");
 }; 

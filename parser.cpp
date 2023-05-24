@@ -1,14 +1,6 @@
 #include "parser.h" 
 using namespace std; 
-/*
-    potential for
-    class Token{
-        bool ifOperand
-            int precedence
-            int opCount (how many operands need)
-        chat value 
-    }
-*/
+
 Parser::Parser(string input){
     this->input =  input; 
     this->qu = new Queue(input.length()); 
@@ -30,31 +22,28 @@ Parser::Parser(const Parser& another){
 void Parser::toPostfix(){
     _prepareInput(); 
 
-    cout << input.length() << endl; 
-    cout<< "queue size: " << qu->getSize()<< endl; 
-    // for future with chars in Queue and Stack
-    // if input.at(i)!= " "
-    //  _decideAndPut(input.at(i));
+    // cout << input.length() << endl; 
+    // cout<< "queue size: " << qu->getSize()<< endl; 
 
     for (size_t i = 0; i < input.length(); ++i) {
         string current;
         // Check if the character is a digit
         if (isdigit(input[i])) {
-            if(input[i-1] == 'u')current += "-";
-            // If it's a digit, continue appending characters until a non-digit is encountered
-            while (i < input.length() && (isdigit(input[i]) || input[i] == '.')) {
+            if(input[i-1] == 'u') current += "-"; // unary minus
+            // If it's a number with more than 1 digit 
+            while (i < input.length() && (isdigit(input[i]))) {
                 current += input[i];
                 ++i;
             }
-            // Decrement i to handle the non-digit character in the next iteration
+            //for the non-digit character in the next iteration
             --i;
         }
-        else if(input[i]=='u') continue; 
+        else if(input[i]=='u') continue; //skipping unary minus to reunite it later
         else current = input[i]; 
 
         _decideAndPut(current);
-        qu->print(); 
-        st->print();
+        // qu->print(); 
+        // st->print();
     }
 
     while(! st->isEmpty()){
@@ -66,12 +55,11 @@ void Parser::toPostfix(){
         }
     }
       
-    cout<< "queue size: " << qu->getSize()<< endl; 
-    cout<<"\nQueue: "; 
-    qu->print();
-    cout<<"\nStack: "; 
-    st->print();  
-
+    // cout<< "queue size: " << qu->getSize()<< endl; 
+    // cout<<"\nQueue: "; 
+    // qu->print();
+    // cout<<"\nStack: "; 
+    // st->print();  
 }
 
 void Parser::_prepareInput(){
@@ -82,37 +70,38 @@ void Parser::_prepareInput(){
     string temp; 
     while(ss >> temp) newinput+= temp; 
     
-  } else newinput = this->input;
-  cout << newinput << endl;  
+  } else newinput = this->input; 
 
     for(int i = 0; i < newinput.length(); i++){
         if (newinput[i] == '-'){
             if( (i == 0) || (!isdigit(newinput[i-1])) && newinput[i-1]!= ')'){
-                newinput.replace(i, 1, "u");
+                newinput.replace(i, 1, "u"); // replacing unary minus heh
             }
         }
     }
-    cout << newinput<< endl; 
+    //cout << newinput<< endl; 
     this->input = newinput; 
 };
 
-void Parser:: _decideAndPut(const string& value){//const Token& value
+void Parser:: _decideAndPut(const string& value){
     if (_ifNumber(value)){
-        cout<< value<< endl; 
         qu->enqueue(value); 
     }
     else{        
-        cout << "notNum: " << value << endl; 
-            // string o2 = st->peek(); 
-            // if value == ")"
-        while( !(st->isEmpty()) && st->peek() != "(" 
-                &&( (getPrecedence(st->peek()) > getPrecedence(value) 
-                || (getPrecedence(st->peek()) == getPrecedence(value) && value != "^")) )){
+        //cout << "notNum: " << value << endl; 
+        Operator op(value);
+
+        while( !st->isEmpty() && st->peek() != "(" ){
+            Operator last(st->peek());
+
+            bool action = ( last.getPrec() > op.getPrec() 
+            || (last.getPrec() == op.getPrec()  && op.isLeft() ) ); 
                 // if equal and left assotiative
+            
+            if (!action) break;
             if(st->peek() != "(" && st->peek() != ")"){
                 qu->enqueue(st->pop()); 
-            }     
-                       
+            }                  
         }
         if (value == ")") {
             if(st->peek() == ")") st->pop();
@@ -122,17 +111,8 @@ void Parser:: _decideAndPut(const string& value){//const Token& value
     }
 }
 
-int  Parser::getPrecedence(const string& o){
-    if (o == ")") return 0; 
-    if (o == "+" || o == "-") return 1;
-    if (o == "*" || o == "/" || o == "% ") return 2; 
-    if (o == "^") return 3;
-    if (o == "(") return 4; // ? 
-    else return -1;
-}
-
 bool Parser::_ifNumber(const string& s){
-    string operators = "+-/*%()^";// змахує на атрибут
+    string operators = "+-/*%()^";
     if (operators.find(s) == string::npos){
         return true;
     }
@@ -140,25 +120,54 @@ bool Parser::_ifNumber(const string& s){
     else return false; 
 }
 
-
 int Parser::PostfixEval(){
     while(!qu->isEmpty()){
         string token = qu->dequeue(); 
         if(_ifNumber(token)){
             st->push(token); 
         }
-        else st->push(countRes(token));
+        else st->push(_countRes(token));
     }
     return stoi(st->pop());
 }
 
-string Parser::countRes(string& token){
+string Parser::_countRes(string& token){
     int b = stoi(st->pop()); // ckeck for exception 
     int a = stoi(st->pop());
     if (token == "+") return to_string(a+b); 
     if (token == "-") return to_string(a-b); 
     if (token == "*") return to_string(a*b); 
     if (token == "/") return to_string(a/b); 
+    if (token == "%") return to_string(a%b); 
     if (token == "^") return to_string(pow(a, b));
-    return "";
+    throw invalid_argument("(Parser::_countRes) Unable to calculate with operand "
+                             + token);
+}
+
+
+
+const string Operator::operator_list = "+-*/%^()";
+
+Operator::Operator(string value){
+
+    if (operator_list.find(value) == string::npos){
+        throw invalid_argument("Operator " + value+ " cannot be created," + 
+        "as it is probably not an operator. Accepting operator: " + operator_list);
+    }
+    this->o = value; 
+    this->precedence = -1; 
+    this->left = (value != "^"); 
+}
+
+void Operator::countPrec(){
+    if (o == ")") this->precedence = 0; 
+    if (o == "+" || o == "-") this->precedence = 1;
+    if (o == "*" || o == "/" || o == "% ") this->precedence =  2; 
+    if (o == "^") this->precedence =  3;
+    if (o == "(") this->precedence =  4; 
+}
+
+int Operator::getPrec(){
+    if (precedence == -1) countPrec();
+    return this->precedence; 
 }

@@ -1,6 +1,5 @@
 #pragma once
 #include <iostream>
-#include <stdio.h>
 #include <string>
 using namespace std; 
 
@@ -25,7 +24,6 @@ public:
         for(int i = startInd; i <= this->endInd; i++){
             cout << queue[i] << " ";
         }
-        fflush(stdin); 
         cout << endl;
     }
 
@@ -33,7 +31,10 @@ public:
     bool isEmpty(){
         return this->size==0;
     }
-    // bool isFull
+    bool isFull(){
+        return size==capacity;
+    }
+    
 };
 
 class Stack{
