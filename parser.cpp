@@ -14,11 +14,24 @@ Parser::Parser(string input){
     this->qu = new Queue(input.length()); 
     this->st = new Stack(input.length());
 }
+Parser::Parser(const Parser& another){
+    this->input = another.input; 
+    this->qu = new Queue(input.length()); 
+    this->st = new Stack(input.length());
+    
+    for(int i = 0; i< this->qu->getSize(); i++){
+        this->qu[i] = another.qu[i]; 
+    }
+    for(int i = 0; i< this->st->getSize(); i++){
+        this->st[i] = another.st[i]; 
+    }
+}
 
 void Parser::toPostfix(){
     _prepareInput(); 
 
     cout << input.length() << endl; 
+    cout<< "queue size: " << qu->getSize()<< endl; 
     // for future with chars in Queue and Stack
     // if input.at(i)!= " "
     //  _decideAndPut(input.at(i));
@@ -40,8 +53,8 @@ void Parser::toPostfix(){
         else current = input[i]; 
 
         _decideAndPut(current);
-        // qu->print(); 
-        // st->print();
+        qu->print(); 
+        st->print();
     }
 
     while(! st->isEmpty()){
@@ -52,7 +65,8 @@ void Parser::toPostfix(){
             st->pop();
         }
     }
-
+      
+    cout<< "queue size: " << qu->getSize()<< endl; 
     cout<<"\nQueue: "; 
     qu->print();
     cout<<"\nStack: "; 

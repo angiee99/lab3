@@ -25,6 +25,7 @@ public:
         delete qu;
         delete st; 
     }
+    Parser(const Parser& another);
     void toPostfix(); // +
     void _prepareInput();
     void _decideAndPut(const string&); // + internal method  

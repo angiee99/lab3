@@ -8,25 +8,27 @@ class Queue{
     string* queue; 
     int startInd, endInd; 
     int size, capacity; 
+
 public: 
-    Queue(){}; 
+    Queue(); 
     Queue(int capacity);
-    //copy cnstr
+    Queue(Queue&);
     ~Queue(){
         delete[] queue; 
     }
     int getSize() const {
         return size;
     }
-    void enqueue(const string value);
+    void enqueue(const string& value);
     string dequeue();
     void print(){
-        for(int i = startInd; i <= this->size; i++){
+        for(int i = startInd; i <= this->endInd; i++){
             cout << queue[i] << " ";
         }
-        cout<< endl;
+        fflush(stdin); 
+        cout << endl;
     }
-    // ???? 
+
     void resize();
     bool isEmpty(){
         return this->size==0;
@@ -39,12 +41,13 @@ class Stack{
     int size, capacity; 
     int top; 
 public: 
-    Stack(){}; 
+    Stack(); 
     Stack(int capacity);
+    Stack(Stack&);
     ~Stack(){
         delete[] stack; 
     };
-    void push(string value);
+    void push(const string& value);
     string pop(); 
     string peek(); 
     void print(){
@@ -53,6 +56,10 @@ public:
         }
         cout << endl; 
     }
+    int getSize(){
+        return this->size;
+    }
+    void resize();
     bool isEmpty(){
         return this->size==0;
     }
