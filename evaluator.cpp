@@ -1,12 +1,12 @@
-#include "parser.h" 
+#include "evaluator.h" 
 using namespace std; 
 
-Parser::Parser(string input){
+Evaluator::Evaluator(string input){
     this->input =  input; 
     this->qu = new Queue(input.length()); 
     this->st = new Stack(input.length());
 }
-Parser::Parser(const Parser& another){
+Evaluator::Evaluator(const Evaluator& another){
     this->input = another.input; 
     this->qu = new Queue(input.length()); 
     this->st = new Stack(input.length());
@@ -19,7 +19,7 @@ Parser::Parser(const Parser& another){
     }
 }
 
-void Parser::toPostfix(){
+void Evaluator::toPostfix(){
     _prepareInput(); 
 
     // cout << input.length() << endl; 
@@ -62,7 +62,7 @@ void Parser::toPostfix(){
     // st->print();  
 }
 
-void Parser::_prepareInput(){
+void Evaluator::_prepareInput(){
 
   string newinput;
   if(input.find(' ')!= string::npos){ // delete Spaces
@@ -83,7 +83,7 @@ void Parser::_prepareInput(){
     this->input = newinput; 
 };
 
-void Parser:: _decideAndPut(const string& value){
+void Evaluator:: _decideAndPut(const string& value){
     if (_ifNumber(value)){
         qu->enqueue(value); 
     }
@@ -111,7 +111,7 @@ void Parser:: _decideAndPut(const string& value){
     }
 }
 
-bool Parser::_ifNumber(const string& s){
+bool Evaluator::_ifNumber(const string& s){
     string operators = "+-/*%()^";
     if (operators.find(s) == string::npos){
         return true;
@@ -120,7 +120,7 @@ bool Parser::_ifNumber(const string& s){
     else return false; 
 }
 
-int Parser::PostfixEval(){
+int Evaluator::PostfixEval(){
     while(!qu->isEmpty()){
         string token = qu->dequeue(); 
         if(_ifNumber(token)){
@@ -131,7 +131,7 @@ int Parser::PostfixEval(){
     return stoi(st->pop());
 }
 
-string Parser::_countRes(string& token){
+string Evaluator::_countRes(string& token){
     int b = stoi(st->pop()); // ckeck for exception 
     int a = stoi(st->pop());
     if (token == "+") return to_string(a+b); 

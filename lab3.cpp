@@ -4,7 +4,7 @@
 #include <sstream>
 
 #include "structs.h"  
-#include "parser.h" 
+#include "evaluator.h" 
 
 using namespace std; 
 
@@ -18,7 +18,7 @@ int main(int argc, char *argv[]){
             return 1;       
         }   
 
-        Parser p(argv[1]);  
+        Evaluator p(argv[1]);  
         p.toPostfix(); 
         cout << "Result: " << p.PostfixEval()<< endl;
 

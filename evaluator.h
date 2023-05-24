@@ -22,7 +22,7 @@ public:
 };
 
 
-class Parser{ //mb change name to Yard
+class Evaluator{ //mb change name to Yard
     Queue *qu; 
     Stack *st; 
     string input; 
@@ -32,12 +32,12 @@ protected:
     bool _ifNumber(const string&); 
     string _countRes(string& token); 
 public: 
-    Parser(string input); 
-    ~Parser(){
+    Evaluator(string input); 
+    ~Evaluator(){
         delete qu;
         delete st; 
     }
-    Parser(const Parser& another);
+    Evaluator(const Evaluator& another);
     void toPostfix(); // +
     int PostfixEval(); //+
    
