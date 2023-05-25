@@ -6,6 +6,7 @@ Evaluator::Evaluator(string input){
     this->qu = new Queue(input.length()); 
     this->st = new Stack(input.length());
 }
+
 Evaluator::Evaluator(const Evaluator& another){
     this->input = another.input; 
     this->qu = new Queue(input.length()); 
@@ -17,6 +18,11 @@ Evaluator::Evaluator(const Evaluator& another){
     for(int i = 0; i< this->st->getSize(); i++){
         this->st[i] = another.st[i]; 
     }
+}
+
+Evaluator::~Evaluator(){
+    delete qu;
+    delete st; 
 }
 
 void Evaluator::toPostfix(){
@@ -147,6 +153,7 @@ string Evaluator::_countRes(string& token){
 
 
 const string Operator::operator_list = "+-*/%^()";
+string Operator::value(){ return o; }; 
 
 Operator::Operator(string value){
 
@@ -171,3 +178,5 @@ int Operator::getPrec(){
     if (precedence == -1) countPrec();
     return this->precedence; 
 }
+
+bool Operator::isLeft(){ return left; }

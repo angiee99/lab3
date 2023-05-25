@@ -1,7 +1,6 @@
 #include <iostream>
 #include <stdio.h>
 #include <string>
-#include <sstream>
 
 #include "structs.h"  
 #include "evaluator.h" 

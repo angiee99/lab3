@@ -32,8 +32,12 @@ Queue::Queue(Queue& another){
     
 }
 
+Queue::~Queue(){
+    delete[] queue; 
+}
+
 void Queue::enqueue(const string& value){
-    if (size == capacity) resize(); 
+    if (isLoaded()) resize(); 
     endInd++; 
     size++;
     queue[endInd] = value; 
@@ -61,12 +65,30 @@ string Queue::dequeue(){
         }
     }
 
+//load factor !!
+bool Queue::isLoaded(){
+    float loaded = (float)size / capacity;
+    return (loaded >= 0.75);
+}
 void Queue::resize(){
     this->capacity *= 2; 
     string* newqueue =  new string[this->capacity]; 
     memcpy( newqueue, queue, size * sizeof(string) );
     delete[] queue; 
     this->queue = newqueue; 
+}
+int Queue::getSize() const {
+    return size;
+}
+
+void Queue::print(){
+    for(int i = startInd; i <= this->endInd; i++){
+        cout << queue[i] << " ";
+    }
+    cout << endl;
+}
+bool Queue::isEmpty(){
+    return this->size==0;
 }
 
 
@@ -95,6 +117,14 @@ Stack::Stack(Stack& another){
     }
 }
 
+Stack::~Stack(){
+    delete[] stack; 
+};
+
+bool Stack::isLoaded(){ // load factor 
+    float loaded = (float)size / capacity;
+    return (loaded >= 0.75);
+}
 void Stack::resize(){
     this->capacity *= 2; 
     string* newstack =  new string[this->capacity]; 
@@ -104,7 +134,7 @@ void Stack::resize(){
 }
 
 void Stack::push(const string& value){
-    if(isFull()) resize();
+    if(isLoaded()) resize();
 
     top++;
     size++;
@@ -112,16 +142,16 @@ void Stack::push(const string& value){
 };
 
 string Stack::pop(){
-        if(size > 0){
-            string value = stack[top];
-            top--; 
-            size--; 
-            return value; 
-        }
-        else{
-           throw  runtime_error("Stack is void, unable to pop."); 
-        } 
-    }; 
+    if(size > 0){
+        string value = stack[top];
+        top--; 
+        size--; 
+        return value; 
+    }
+    else{
+        throw  runtime_error("Stack is void, unable to pop."); 
+    } 
+}; 
 
 string Stack::peek(){
     if(top > -1) {
@@ -129,3 +159,15 @@ string Stack::peek(){
     }
     throw runtime_error("Stack is void, nothing to peek here.");
 }; 
+void Stack::print(){
+    for(int i = 0; i <= top; i++){
+        cout << stack[i] << " "; 
+    }
+    cout << endl; 
+}
+int Stack::getSize() const {
+    return this->size;
+}
+bool Stack::isEmpty() const{
+    return this->size==0;
+}

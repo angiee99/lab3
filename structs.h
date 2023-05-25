@@ -12,29 +12,14 @@ public:
     Queue(); 
     Queue(int capacity);
     Queue(Queue&);
-    ~Queue(){
-        delete[] queue; 
-    }
-    int getSize() const {
-        return size;
-    }
+    ~Queue();
+    int getSize() const;
     void enqueue(const string& value);
     string dequeue();
-    void print(){
-        for(int i = startInd; i <= this->endInd; i++){
-            cout << queue[i] << " ";
-        }
-        cout << endl;
-    }
-
+    void print();
     void resize();
-    bool isEmpty(){
-        return this->size==0;
-    }
-    bool isFull(){
-        return size==capacity;
-    }
-    
+    bool isEmpty();
+    bool isLoaded();
 };
 
 class Stack{
@@ -45,26 +30,13 @@ public:
     Stack(); 
     Stack(int capacity);
     Stack(Stack&);
-    ~Stack(){
-        delete[] stack; 
-    };
+    ~Stack();
     void push(const string& value);
     string pop(); 
     string peek(); 
-    void print(){
-        for(int i = 0; i <= top; i++){
-            cout << stack[i] << " "; 
-        }
-        cout << endl; 
-    }
-    int getSize(){
-        return this->size;
-    }
+    void print();
+    int getSize() const;
     void resize();
-    bool isEmpty(){
-        return this->size==0;
-    }
-    bool isFull(){
-        return size==capacity;
-    }
+    bool isEmpty() const;
+    bool isLoaded(); // load factor 
 };
