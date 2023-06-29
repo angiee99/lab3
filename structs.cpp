@@ -65,7 +65,6 @@ string Queue::dequeue(){
         }
     }
 
-//load factor !!
 bool Queue::isLoaded(){
     float loaded = (float)size / capacity;
     return (loaded >= 0.75);

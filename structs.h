@@ -38,5 +38,5 @@ public:
     int getSize() const;
     void resize();
     bool isEmpty() const;
-    bool isLoaded(); // load factor 
+    bool isLoaded(); 
 };

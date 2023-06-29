@@ -28,8 +28,6 @@ Evaluator::~Evaluator(){
 void Evaluator::toPostfix(){
     _prepareInput(); 
 
-    // cout << input.length() << endl; 
-    // cout<< "queue size: " << qu->getSize()<< endl; 
 
     for (size_t i = 0; i < input.length(); ++i) {
         string current;
@@ -48,8 +46,6 @@ void Evaluator::toPostfix(){
         else current = input[i]; 
 
         _decideAndPut(current);
-        // qu->print(); 
-        // st->print();
     }
 
     while(! st->isEmpty()){
@@ -61,11 +57,6 @@ void Evaluator::toPostfix(){
         }
     }
       
-    // cout<< "queue size: " << qu->getSize()<< endl; 
-    // cout<<"\nQueue: "; 
-    // qu->print();
-    // cout<<"\nStack: "; 
-    // st->print();  
 }
 
 void Evaluator::_prepareInput(){
@@ -85,7 +76,6 @@ void Evaluator::_prepareInput(){
             }
         }
     }
-    //cout << newinput<< endl; 
     this->input = newinput; 
 };
 
@@ -94,7 +84,6 @@ void Evaluator:: _decideAndPut(const string& value){
         qu->enqueue(value); 
     }
     else{        
-        //cout << "notNum: " << value << endl; 
         Operator op(value);
 
         while( !st->isEmpty() && st->peek() != "(" ){
@@ -138,7 +127,7 @@ int Evaluator::PostfixEval(){
 }
 
 string Evaluator::_countRes(string& token){
-    int b = stoi(st->pop()); // ckeck for exception 
+    int b = stoi(st->pop()); 
     int a = stoi(st->pop());
     if (token == "+") return to_string(a+b); 
     if (token == "-") return to_string(a-b); 
