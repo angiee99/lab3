@@ -6,6 +6,7 @@ For example, if the program is compiled into the file lab3.exe, it should be run
 
 > lab3.exe 1 + 2 * 4+1 [Enter].
 Result: 10
+>
 Spaces may be present or absent. 
 
 Note: The input data is not checked for correctness, but a syntax tree (AST) should be built to implement it. 
