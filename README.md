@@ -16,7 +16,7 @@ A custom stack and queue (structs) are used.
 
 The processing of negative numbers, brackets and powers has been added (also without checking for correct input).
 
-###Input and output data
+### Input and output data
 
 The program is given the arithmetic expression (2 + 4 * 3) as input through the command line arguments, 
 consisting of numbers and symbols +,-,*,/,^,%,(,). 
