@@ -18,7 +18,7 @@ The processing of negative numbers, brackets and powers has been added (also wit
 
 ###Input and output data
 
-The program is given the arithmetic expression (2 + 4*3) as input through the command line arguments, 
+The program is given the arithmetic expression (2 + 4 * 3) as input through the command line arguments, 
 consisting of numbers and symbols +,-,*,/,^,%,(,). 
 
 The output is the result of the calculation (14).
